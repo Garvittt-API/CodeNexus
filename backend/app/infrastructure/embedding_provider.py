@@ -27,7 +27,10 @@ class EmbeddingProvider:
         if self._model is None:
             logger.info("Loading embedding model: %s", self.model_name)
             self._model = SentenceTransformer(self.model_name)
-            logger.info("Embedding model loaded. Dimension: %d", self._model.get_sentence_embedding_dimension())
+            logger.info(
+                "Embedding model loaded. Dimension: %d",
+                self._model.get_sentence_embedding_dimension(),
+            )
         return self._model
 
     @property
@@ -38,7 +41,9 @@ class EmbeddingProvider:
         if not texts:
             return np.array([], dtype=np.float32)
 
-        logger.info("Embedding %d texts with batch_size=%d", len(texts), self.batch_size)
+        logger.info(
+            "Embedding %d texts with batch_size=%d", len(texts), self.batch_size
+        )
 
         if len(texts) <= self.batch_size:
             embeddings = self.model.encode(
@@ -59,7 +64,11 @@ class EmbeddingProvider:
                 convert_to_numpy=True,
             )
             all_embeddings.append(batch_embeddings)
-            logger.debug("Embedded batch %d/%d", i // self.batch_size + 1, (len(texts) + self.batch_size - 1) // self.batch_size)
+            logger.debug(
+                "Embedded batch %d/%d",
+                i // self.batch_size + 1,
+                (len(texts) + self.batch_size - 1) // self.batch_size,
+            )
 
         return np.vstack(all_embeddings).astype(np.float32)
 

@@ -2,10 +2,6 @@
 
 from __future__ import annotations
 
-import tempfile
-from pathlib import Path
-
-import pytest
 
 from app.services.parsing import (
     count_tokens_approximate,
@@ -52,13 +48,20 @@ class TestShouldIgnore:
         assert should_ignore("node_modules/package/index.js", ["node_modules"]) is True
 
     def test_pyc_file(self):
-        assert should_ignore("module/__pycache__/test.cpython-311.pyc", ["__pycache__", "*.pyc"]) is True
+        assert (
+            should_ignore(
+                "module/__pycache__/test.cpython-311.pyc", ["__pycache__", "*.pyc"]
+            )
+            is True
+        )
 
     def test_normal_file(self):
         assert should_ignore("src/main.py", [".git", "node_modules"]) is False
 
     def test_nested_ignore(self):
-        assert should_ignore("src/node_modules/package/index.js", ["node_modules"]) is True
+        assert (
+            should_ignore("src/node_modules/package/index.js", ["node_modules"]) is True
+        )
 
 
 class TestScanRepository:

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import os
 from enum import Enum
 from functools import lru_cache
 from pathlib import Path
@@ -78,8 +77,15 @@ class Settings(BaseSettings):
 
     # Ignore patterns
     IGNORE_PATTERNS: List[str] = [
-        ".git", "node_modules", "venv", "dist", "build",
-        ".cache", "target", "coverage", "__pycache__",
+        ".git",
+        "node_modules",
+        "venv",
+        "dist",
+        "build",
+        ".cache",
+        "target",
+        "coverage",
+        "__pycache__",
     ]
 
     # Rate limiting

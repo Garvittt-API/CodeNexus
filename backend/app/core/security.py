@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import os
 import re
 import subprocess
 from pathlib import Path
@@ -42,7 +41,9 @@ def is_safe_git_url(url: str) -> bool:
     return any(re.match(p, url) for p in safe_patterns)
 
 
-def run_git_command(args: List[str], cwd: Path, timeout: int = 120) -> subprocess.CompletedProcess:
+def run_git_command(
+    args: List[str], cwd: Path, timeout: int = 120
+) -> subprocess.CompletedProcess:
     """Run a Git command safely with shell=False."""
     cmd = ["git"] + args
     return subprocess.run(
@@ -72,7 +73,9 @@ def is_git_available() -> bool:
 
 def get_default_branch(repo_path: Path) -> str:
     """Get the default branch of a git repository."""
-    result = run_git_command(["symbolic-ref", "refs/remotes/origin/HEAD", "--short"], cwd=repo_path)
+    result = run_git_command(
+        ["symbolic-ref", "refs/remotes/origin/HEAD", "--short"], cwd=repo_path
+    )
     if result.returncode == 0:
         return result.stdout.strip().replace("origin/", "")
     return "main"

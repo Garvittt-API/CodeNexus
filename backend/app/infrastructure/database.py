@@ -14,7 +14,6 @@ from sqlalchemy import (
     String,
     Text,
     create_engine,
-    text,
 )
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
@@ -114,30 +113,50 @@ class Database:
 
     def get_repository(self, repo_id: str) -> Optional[Dict[str, Any]]:
         with self.get_session() as session:
-            model = session.query(RepositoryModel).filter(RepositoryModel.id == repo_id).first()
+            model = (
+                session.query(RepositoryModel)
+                .filter(RepositoryModel.id == repo_id)
+                .first()
+            )
             if not model:
                 return None
             return self._repo_to_dict(model)
 
     def list_repositories(self) -> List[Dict[str, Any]]:
         with self.get_session() as session:
-            models = session.query(RepositoryModel).order_by(RepositoryModel.created_at.desc()).all()
+            models = (
+                session.query(RepositoryModel)
+                .order_by(RepositoryModel.created_at.desc())
+                .all()
+            )
             return [self._repo_to_dict(m) for m in models]
 
     def delete_repository(self, repo_id: str) -> bool:
         with self.get_session() as session:
-            repo = session.query(RepositoryModel).filter(RepositoryModel.id == repo_id).first()
+            repo = (
+                session.query(RepositoryModel)
+                .filter(RepositoryModel.id == repo_id)
+                .first()
+            )
             if not repo:
                 return False
-            session.query(CodeChunkModel).filter(CodeChunkModel.repo_id == repo_id).delete()
-            session.query(IndexingTaskModel).filter(IndexingTaskModel.repo_id == repo_id).delete()
+            session.query(CodeChunkModel).filter(
+                CodeChunkModel.repo_id == repo_id
+            ).delete()
+            session.query(IndexingTaskModel).filter(
+                IndexingTaskModel.repo_id == repo_id
+            ).delete()
             session.delete(repo)
             session.commit()
             return True
 
     def update_repository(self, repo_id: str, **kwargs: Any) -> None:
         with self.get_session() as session:
-            model = session.query(RepositoryModel).filter(RepositoryModel.id == repo_id).first()
+            model = (
+                session.query(RepositoryModel)
+                .filter(RepositoryModel.id == repo_id)
+                .first()
+            )
             if model:
                 for key, value in kwargs.items():
                     if key == "languages" and isinstance(value, dict):
@@ -170,12 +189,20 @@ class Database:
 
     def get_chunks_by_repo(self, repo_id: str) -> List[Dict[str, Any]]:
         with self.get_session() as session:
-            models = session.query(CodeChunkModel).filter(CodeChunkModel.repo_id == repo_id).all()
+            models = (
+                session.query(CodeChunkModel)
+                .filter(CodeChunkModel.repo_id == repo_id)
+                .all()
+            )
             return [self._chunk_to_dict(m) for m in models]
 
     def get_chunk(self, chunk_id: str) -> Optional[Dict[str, Any]]:
         with self.get_session() as session:
-            model = session.query(CodeChunkModel).filter(CodeChunkModel.id == chunk_id).first()
+            model = (
+                session.query(CodeChunkModel)
+                .filter(CodeChunkModel.id == chunk_id)
+                .first()
+            )
             if not model:
                 return None
             return self._chunk_to_dict(model)
@@ -188,7 +215,11 @@ class Database:
 
     def update_task(self, task_id: str, **kwargs: Any) -> None:
         with self.get_session() as session:
-            model = session.query(IndexingTaskModel).filter(IndexingTaskModel.id == task_id).first()
+            model = (
+                session.query(IndexingTaskModel)
+                .filter(IndexingTaskModel.id == task_id)
+                .first()
+            )
             if model:
                 for key, value in kwargs.items():
                     if hasattr(model, key):
@@ -197,10 +228,17 @@ class Database:
 
     def get_task(self, task_id: str) -> Optional[Dict[str, Any]]:
         with self.get_session() as session:
-            model = session.query(IndexingTaskModel).filter(IndexingTaskModel.id == task_id).first()
+            model = (
+                session.query(IndexingTaskModel)
+                .filter(IndexingTaskModel.id == task_id)
+                .first()
+            )
             if not model:
                 return None
-            return {c.key: getattr(model, c.key) for c in IndexingTaskModel.__table__.columns}
+            return {
+                c.key: getattr(model, c.key)
+                for c in IndexingTaskModel.__table__.columns
+            }
 
     @staticmethod
     def _repo_to_dict(model: RepositoryModel) -> Dict[str, Any]:

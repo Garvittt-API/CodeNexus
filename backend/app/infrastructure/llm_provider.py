@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import logging
 from abc import ABC, abstractmethod
-from typing import Any, AsyncIterator, Dict, Optional
+from typing import AsyncGenerator
 
 import httpx
 
@@ -22,8 +22,11 @@ class BaseLLMProvider(ABC):
         pass
 
     @abstractmethod
-    async def generate_stream(self, prompt: str, system: str = SYSTEM_PROMPT) -> AsyncIterator[str]:
-        pass
+    async def generate_stream(
+        self, prompt: str, system: str = SYSTEM_PROMPT
+    ) -> AsyncGenerator[str, None]:
+        if False:
+            yield ""
 
 
 class OllamaProvider(BaseLLMProvider):
@@ -35,17 +38,29 @@ class OllamaProvider(BaseLLMProvider):
         async with httpx.AsyncClient(timeout=120.0) as client:
             response = await client.post(
                 f"{self.base_url}/api/generate",
-                json={"model": self.model, "prompt": prompt, "system": system, "stream": False},
+                json={
+                    "model": self.model,
+                    "prompt": prompt,
+                    "system": system,
+                    "stream": False,
+                },
             )
             response.raise_for_status()
             return response.json().get("response", "")
 
-    async def generate_stream(self, prompt: str, system: str = SYSTEM_PROMPT) -> AsyncIterator[str]:
+    async def generate_stream(
+        self, prompt: str, system: str = SYSTEM_PROMPT
+    ) -> AsyncGenerator[str, None]:
         async with httpx.AsyncClient(timeout=120.0) as client:
             async with client.stream(
                 "POST",
                 f"{self.base_url}/api/generate",
-                json={"model": self.model, "prompt": prompt, "system": system, "stream": True},
+                json={
+                    "model": self.model,
+                    "prompt": prompt,
+                    "system": system,
+                    "stream": True,
+                },
             ) as response:
                 response.raise_for_status()
                 async for line in response.aiter_lines():
@@ -80,7 +95,9 @@ class OpenAIProvider(BaseLLMProvider):
             response.raise_for_status()
             return response.json()["choices"][0]["message"]["content"]
 
-    async def generate_stream(self, prompt: str, system: str = SYSTEM_PROMPT) -> AsyncIterator[str]:
+    async def generate_stream(
+        self, prompt: str, system: str = SYSTEM_PROMPT
+    ) -> AsyncGenerator[str, None]:
         async with httpx.AsyncClient(timeout=120.0) as client:
             async with client.stream(
                 "POST",
@@ -131,7 +148,9 @@ class AnthropicProvider(BaseLLMProvider):
             response.raise_for_status()
             return response.json()["content"][0]["text"]
 
-    async def generate_stream(self, prompt: str, system: str = SYSTEM_PROMPT) -> AsyncIterator[str]:
+    async def generate_stream(
+        self, prompt: str, system: str = SYSTEM_PROMPT
+    ) -> AsyncGenerator[str, None]:
         async with httpx.AsyncClient(timeout=120.0) as client:
             async with client.stream(
                 "POST",
@@ -176,7 +195,9 @@ class GeminiProvider(BaseLLMProvider):
             response.raise_for_status()
             return response.json()["candidates"][0]["content"]["parts"][0]["text"]
 
-    async def generate_stream(self, prompt: str, system: str = SYSTEM_PROMPT) -> AsyncIterator[str]:
+    async def generate_stream(
+        self, prompt: str, system: str = SYSTEM_PROMPT
+    ) -> AsyncGenerator[str, None]:
         async with httpx.AsyncClient(timeout=120.0) as client:
             async with client.stream(
                 "POST",
@@ -188,12 +209,12 @@ class GeminiProvider(BaseLLMProvider):
             ) as response:
                 response.raise_for_status()
                 async for line in response.aiter_lines():
-                        try:
-                            data = json.loads(line)
-                            text = data["candidates"][0]["content"]["parts"][0]["text"]
-                            yield text
-                        except (json.JSONDecodeError, KeyError, IndexError):
-                            continue
+                    try:
+                        data = json.loads(line)
+                        text = data["candidates"][0]["content"]["parts"][0]["text"]
+                        yield text
+                    except (json.JSONDecodeError, KeyError, IndexError):
+                        continue
 
 
 class DeepSeekProvider(BaseLLMProvider):
@@ -217,7 +238,9 @@ class DeepSeekProvider(BaseLLMProvider):
             response.raise_for_status()
             return response.json()["choices"][0]["message"]["content"]
 
-    async def generate_stream(self, prompt: str, system: str = SYSTEM_PROMPT) -> AsyncIterator[str]:
+    async def generate_stream(
+        self, prompt: str, system: str = SYSTEM_PROMPT
+    ) -> AsyncGenerator[str, None]:
         async with httpx.AsyncClient(timeout=120.0) as client:
             async with client.stream(
                 "POST",
@@ -265,7 +288,9 @@ class MistralProvider(BaseLLMProvider):
             response.raise_for_status()
             return response.json()["choices"][0]["message"]["content"]
 
-    async def generate_stream(self, prompt: str, system: str = SYSTEM_PROMPT) -> AsyncIterator[str]:
+    async def generate_stream(
+        self, prompt: str, system: str = SYSTEM_PROMPT
+    ) -> AsyncGenerator[str, None]:
         async with httpx.AsyncClient(timeout=120.0) as client:
             async with client.stream(
                 "POST",
@@ -298,7 +323,9 @@ class FakeLLMProvider(BaseLLMProvider):
     async def generate(self, prompt: str, system: str = SYSTEM_PROMPT) -> str:
         return "LLM provider not configured. Please set up Ollama or provide an API key for your preferred provider."
 
-    async def generate_stream(self, prompt: str, system: str = SYSTEM_PROMPT) -> AsyncIterator[str]:
+    async def generate_stream(
+        self, prompt: str, system: str = SYSTEM_PROMPT
+    ) -> AsyncGenerator[str, None]:
         msg = "LLM provider not configured. Please set up Ollama or provide an API key for your preferred provider."
         for word in msg.split(" "):
             yield word + " "
@@ -309,17 +336,25 @@ def get_llm_provider() -> BaseLLMProvider:
     provider = settings.LLM_PROVIDER
 
     if provider == LLMProvider.OLLAMA:
-        return OllamaProvider(base_url=settings.OLLAMA_BASE_URL, model=settings.LLM_MODEL)
+        return OllamaProvider(
+            base_url=settings.OLLAMA_BASE_URL, model=settings.LLM_MODEL
+        )
     elif provider == LLMProvider.OPENAI and settings.OPENAI_API_KEY:
         return OpenAIProvider(api_key=settings.OPENAI_API_KEY, model=settings.LLM_MODEL)
     elif provider == LLMProvider.ANTHROPIC and settings.ANTHROPIC_API_KEY:
-        return AnthropicProvider(api_key=settings.ANTHROPIC_API_KEY, model=settings.LLM_MODEL)
+        return AnthropicProvider(
+            api_key=settings.ANTHROPIC_API_KEY, model=settings.LLM_MODEL
+        )
     elif provider == LLMProvider.GEMINI and settings.GEMINI_API_KEY:
         return GeminiProvider(api_key=settings.GEMINI_API_KEY, model=settings.LLM_MODEL)
     elif provider == LLMProvider.DEEPSEEK and settings.DEEPSEEK_API_KEY:
-        return DeepSeekProvider(api_key=settings.DEEPSEEK_API_KEY, model=settings.LLM_MODEL)
+        return DeepSeekProvider(
+            api_key=settings.DEEPSEEK_API_KEY, model=settings.LLM_MODEL
+        )
     elif provider == LLMProvider.MISTRAL and settings.MISTRAL_API_KEY:
-        return MistralProvider(api_key=settings.MISTRAL_API_KEY, model=settings.LLM_MODEL)
+        return MistralProvider(
+            api_key=settings.MISTRAL_API_KEY, model=settings.LLM_MODEL
+        )
 
     logger.warning("No LLM provider configured, using FakeLLMProvider")
     return FakeLLMProvider()

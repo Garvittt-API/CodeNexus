@@ -4,10 +4,9 @@ from __future__ import annotations
 
 import logging
 import time
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 from ..core.config import get_settings
-from ..core.exceptions import SearchError
 from ..infrastructure.database import get_db
 from ..infrastructure.embedding_provider import get_embedding_provider
 from ..infrastructure.llm_provider import get_llm_provider
@@ -32,7 +31,11 @@ def search_code(
 
     query_embedding = embedding_provider.embed_query(query)
 
-    ann_top_k = min(settings.SEARCH_TOP_K, vector_db.count()) if vector_db.count() > 0 else top_k
+    ann_top_k = (
+        min(settings.SEARCH_TOP_K, vector_db.count())
+        if vector_db.count() > 0
+        else top_k
+    )
     candidates = vector_db.search(query_embedding, top_k=ann_top_k)
 
     if not candidates:
@@ -63,22 +66,26 @@ def search_code(
         chunk_id = meta.get("chunk_id")
         if chunk_id and chunk_id in chunk_map:
             chunk = chunk_map[chunk_id]
-            results_with_scores.append({
-                "chunk_id": chunk_id,
-                "file_path": chunk["file_path"],
-                "language": chunk["language"],
-                "content": chunk["content"],
-                "start_line": chunk["start_line"],
-                "end_line": chunk["end_line"],
-                "chunk_type": chunk["chunk_type"],
-                "name": chunk.get("name"),
-                "score": score,
-            })
+            results_with_scores.append(
+                {
+                    "chunk_id": chunk_id,
+                    "file_path": chunk["file_path"],
+                    "language": chunk["language"],
+                    "content": chunk["content"],
+                    "start_line": chunk["start_line"],
+                    "end_line": chunk["end_line"],
+                    "chunk_type": chunk["chunk_type"],
+                    "name": chunk.get("name"),
+                    "score": score,
+                }
+            )
 
     if rerank and results_with_scores and len(results_with_scores) > 1:
         reranker = get_reranker()
         documents = [r["content"] for r in results_with_scores]
-        reranked = reranker.rerank(query, documents, top_k=min(settings.RERANK_TOP_K, len(documents)))
+        reranked = reranker.rerank(
+            query, documents, top_k=min(settings.RERANK_TOP_K, len(documents))
+        )
         reranked_results = []
         for rank, (idx, rerank_score) in enumerate(reranked):
             result = results_with_scores[idx]
@@ -111,7 +118,9 @@ async def search_and_explain(
     settings = get_settings()
     start_time = time.time()
 
-    search_result = search_code(query, repo_id, top_k=settings.EXPLAIN_TOP_K + 5, rerank=True)
+    search_result = search_code(
+        query, repo_id, top_k=settings.EXPLAIN_TOP_K + 5, rerank=True
+    )
     top_results = search_result["results"][: settings.EXPLAIN_TOP_K]
 
     if not top_results:

@@ -10,7 +10,6 @@ from pydantic import BaseModel, Field
 from ...core.exceptions import CodeNexusError, RepositoryImportError
 from ...services.indexing import (
     delete_repository,
-    get_indexing_status,
     import_repository,
     start_indexing,
 )

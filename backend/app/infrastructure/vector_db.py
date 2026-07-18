@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import os
 from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -88,7 +87,9 @@ class FAISSVectorDB(BaseVectorDB):
         query_normalized = query_embedding / norm
 
         actual_k = min(top_k, self.index.ntotal)
-        scores, indices = self.index.search(query_normalized.astype(np.float32), actual_k)
+        scores, indices = self.index.search(
+            query_normalized.astype(np.float32), actual_k
+        )
 
         results = []
         for score, idx in zip(scores[0], indices[0]):
@@ -104,7 +105,11 @@ class FAISSVectorDB(BaseVectorDB):
         faiss.write_index(self.index, str(path / "index.faiss"))
         with open(path / "metadata.json", "w") as f:
             json.dump(
-                {"metadata": self.metadata, "id_counter": self.id_counter, "dimension": self.dimension},
+                {
+                    "metadata": self.metadata,
+                    "id_counter": self.id_counter,
+                    "dimension": self.dimension,
+                },
                 f,
             )
 
@@ -138,7 +143,9 @@ class FAISSVectorDB(BaseVectorDB):
         keep_mask = np.ones(len(self.metadata), dtype=bool)
         keep_mask[indices_to_remove] = False
 
-        remaining_meta = [self.metadata[i] for i in range(len(self.metadata)) if keep_mask[i]]
+        remaining_meta = [
+            self.metadata[i] for i in range(len(self.metadata)) if keep_mask[i]
+        ]
 
         if remaining_meta:
             embeddings = []

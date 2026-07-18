@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import logging
-from typing import AsyncIterator
+from typing import AsyncGenerator
 
 from ..core.exceptions import LLMError
 from ..infrastructure.llm_provider import get_llm_provider
@@ -21,7 +21,7 @@ async def generate_explanation(prompt: str) -> str:
         raise LLMError(f"Failed to generate explanation: {e}")
 
 
-async def generate_explanation_stream(prompt: str) -> AsyncIterator[str]:
+async def generate_explanation_stream(prompt: str) -> AsyncGenerator[str, None]:
     """Stream an explanation from the LLM provider."""
     provider = get_llm_provider()
     try:

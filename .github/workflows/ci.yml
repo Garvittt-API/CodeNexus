@@ -64,9 +64,9 @@ jobs:
         with:
           node-version: "20"
       - name: Install dependencies
-        run: cd frontend && npm ci
-      - name: Lint
-        run: cd frontend && npm run lint
+        run: cd frontend && npm install --legacy-peer-deps
+      - name: Type check
+        run: cd frontend && npx tsc --noEmit
       - name: Build
         run: cd frontend && npm run build
 

@@ -5,7 +5,6 @@ from __future__ import annotations
 import logging
 import shutil
 import uuid
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -42,7 +41,12 @@ def import_repository(source: str, source_type: str = "local") -> Dict[str, Any]
         indexed_path = str(settings.REPOS_DIR / repo_id)
         settings.REPOS_DIR.mkdir(parents=True, exist_ok=True)
         try:
-            shutil.copytree(str(local_path), indexed_path, dirs_exist_ok=True, ignore=shutil.ignore_patterns(*settings.IGNORE_PATTERNS))
+            shutil.copytree(
+                str(local_path),
+                indexed_path,
+                dirs_exist_ok=True,
+                ignore=shutil.ignore_patterns(*settings.IGNORE_PATTERNS),
+            )
         except Exception as e:
             raise RepositoryImportError(f"Failed to copy repository: {e}")
 
@@ -52,7 +56,9 @@ def import_repository(source: str, source_type: str = "local") -> Dict[str, Any]
         repo_name = source.rstrip("/").split("/")[-1].replace(".git", "")
         indexed_path = str(settings.REPOS_DIR / repo_id)
         settings.REPOS_DIR.mkdir(parents=True, exist_ok=True)
-        result = run_git_command(["clone", "--depth", "1", source, indexed_path], cwd=settings.REPOS_DIR)
+        result = run_git_command(
+            ["clone", "--depth", "1", source, indexed_path], cwd=settings.REPOS_DIR
+        )
         if result.returncode != 0:
             raise RepositoryImportError(f"Git clone failed: {result.stderr}")
 
@@ -120,6 +126,8 @@ def _run_indexing(repo_id: str, task_id: str) -> None:
     settings = get_settings()
     db = get_db()
     repo = db.get_repository(repo_id)
+    if not repo:
+        raise IndexingError(f"Repository {repo_id} not found")
     repo_path = repo["indexed_path"]
 
     if not repo_path or not Path(repo_path).exists():
@@ -187,7 +195,10 @@ def _run_indexing(repo_id: str, task_id: str) -> None:
 
     logger.info(
         "Extracted %d chunks from %d files (functions=%d, classes=%d)",
-        len(all_chunks), len(files), total_functions, total_classes,
+        len(all_chunks),
+        len(files),
+        total_functions,
+        total_classes,
     )
 
     db.update_task(task_id, progress=0.7, current_file="Generating embeddings...")
@@ -204,9 +215,14 @@ def _run_indexing(repo_id: str, task_id: str) -> None:
             batch_embeddings = embedding_provider.embed(batch)
             all_embeddings.append(batch_embeddings)
             progress = 0.7 + 0.2 * ((i + len(batch)) / len(texts))
-            db.update_task(task_id, progress=progress, current_file=f"Embedding {i + len(batch)}/{len(texts)}...")
+            db.update_task(
+                task_id,
+                progress=progress,
+                current_file=f"Embedding {i + len(batch)}/{len(texts)}...",
+            )
 
         import numpy as np
+
         embeddings = np.vstack(all_embeddings)
 
         metadata_list = [
@@ -253,7 +269,12 @@ def _run_indexing(repo_id: str, task_id: str) -> None:
         completed_at=datetime.now(timezone.utc),
     )
 
-    logger.info("Indexing completed for repo %s: %d files, %d chunks", repo_id, len(files), len(all_chunks))
+    logger.info(
+        "Indexing completed for repo %s: %d files, %d chunks",
+        repo_id,
+        len(files),
+        len(all_chunks),
+    )
 
 
 def get_indexing_status(task_id: str) -> Optional[Dict[str, Any]]:

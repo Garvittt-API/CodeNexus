@@ -4,10 +4,7 @@ from __future__ import annotations
 
 import gc
 import os
-import sys
-import tempfile
 import time
-from pathlib import Path
 
 import numpy as np
 
@@ -38,7 +35,12 @@ def benchmark_embedding(n_texts: int = 100) -> dict:
     print(f"  Speed: {speed:.1f} texts/sec")
     print(f"  Shape: {embeddings.shape}")
 
-    return {"n_texts": n_texts, "time": elapsed, "speed": speed, "dimension": provider.dimension}
+    return {
+        "n_texts": n_texts,
+        "time": elapsed,
+        "speed": speed,
+        "dimension": provider.dimension,
+    }
 
 
 def benchmark_vector_search(n_vectors: int = 10000, top_k: int = 10) -> dict:
@@ -56,7 +58,9 @@ def benchmark_vector_search(n_vectors: int = 10000, top_k: int = 10) -> dict:
     # Generate random embeddings
     np.random.seed(42)
     embeddings = np.random.rand(n_vectors, dim).astype(np.float32)
-    metadata = [{"chunk_id": str(i), "file_path": f"file_{i}.py"} for i in range(n_vectors)]
+    metadata = [
+        {"chunk_id": str(i), "file_path": f"file_{i}.py"} for i in range(n_vectors)
+    ]
 
     # Build index
     db = FAISSVectorDB(dimension=dim)
@@ -80,7 +84,12 @@ def benchmark_vector_search(n_vectors: int = 10000, top_k: int = 10) -> dict:
     print(f"  P99 search latency: {p99_time:.1f}ms")
     print(f"  Throughput: {1000/avg_time:.0f} queries/sec")
 
-    return {"n_vectors": n_vectors, "index_time": index_time, "avg_latency_ms": avg_time, "p99_latency_ms": p99_time}
+    return {
+        "n_vectors": n_vectors,
+        "index_time": index_time,
+        "avg_latency_ms": avg_time,
+        "p99_latency_ms": p99_time,
+    }
 
 
 def benchmark_search_pipeline(n_vectors: int = 1000) -> dict:
@@ -97,8 +106,9 @@ def benchmark_search_pipeline(n_vectors: int = 1000) -> dict:
 
     np.random.seed(42)
     embeddings = np.random.rand(n_vectors, dim).astype(np.float32)
-    codes = [f"def func_{i}(): return {i}" for i in range(n_vectors)]
-    metadata = [{"chunk_id": str(i), "file_path": f"file_{i}.py"} for i in range(n_vectors)]
+    metadata = [
+        {"chunk_id": str(i), "file_path": f"file_{i}.py"} for i in range(n_vectors)
+    ]
 
     db = FAISSVectorDB(dimension=dim)
     db.add_embeddings(embeddings, metadata)
@@ -137,14 +147,19 @@ def benchmark_memory() -> dict:
     mem_before = process.memory_info().rss / 1024 / 1024
 
     from app.infrastructure.embedding_provider import get_embedding_provider
-    provider = get_embedding_provider()
+
+    _provider = get_embedding_provider()  # trigger lazy model load
     mem_after_model = process.memory_info().rss / 1024 / 1024
 
     print(f"  Before model load: {mem_before:.1f}MB")
     print(f"  After model load: {mem_after_model:.1f}MB")
     print(f"  Model memory: {mem_after_model - mem_before:.1f}MB")
 
-    return {"before_mb": mem_before, "after_mb": mem_after_model, "model_mb": mem_after_model - mem_before}
+    return {
+        "before_mb": mem_before,
+        "after_mb": mem_after_model,
+        "model_mb": mem_after_model - mem_before,
+    }
 
 
 def main():

@@ -5,12 +5,10 @@ from __future__ import annotations
 import logging
 import os
 import re
-import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 from ..core.config import get_settings
-from ..core.security import validate_path
 
 logger = logging.getLogger(__name__)
 
@@ -99,7 +97,12 @@ TS_LANGUAGE_MAP: Dict[str, str] = {
 FUNCTION_NODE_TYPES = {
     "python": ["function_definition", "async_function_definition"],
     "javascript": ["function_declaration", "arrow_function", "method_definition"],
-    "typescript": ["function_declaration", "arrow_function", "method_definition", "abstract_method_definition"],
+    "typescript": [
+        "function_declaration",
+        "arrow_function",
+        "method_definition",
+        "abstract_method_definition",
+    ],
     "java": ["method_declaration", "constructor_declaration"],
     "cpp": ["function_definition", "declaration"],
     "c": ["function_definition", "declaration"],
@@ -176,7 +179,9 @@ def get_file_size_mb(file_path: str) -> float:
         return 0.0
 
 
-def scan_repository(repo_path: str, ignore_patterns: Optional[List[str]] = None) -> List[Dict[str, Any]]:
+def scan_repository(
+    repo_path: str, ignore_patterns: Optional[List[str]] = None
+) -> List[Dict[str, Any]]:
     """Recursively scan a repository and return file information."""
     settings = get_settings()
     if ignore_patterns is None:
@@ -212,13 +217,15 @@ def scan_repository(repo_path: str, ignore_patterns: Optional[List[str]] = None)
             except Exception:
                 continue
 
-            files.append({
-                "path": str(rel_path),
-                "absolute_path": str(file_path),
-                "language": language,
-                "lines": line_count,
-                "size": file_path.stat().st_size,
-            })
+            files.append(
+                {
+                    "path": str(rel_path),
+                    "absolute_path": str(file_path),
+                    "language": language,
+                    "lines": line_count,
+                    "size": file_path.stat().st_size,
+                }
+            )
 
     return files
 
@@ -254,7 +261,7 @@ def _try_treesitter_parse(
 
     try:
         import tree_sitter
-        from tree_sitter import Language, Parser
+        from tree_sitter import Parser
 
         try:
             language_lib = tree_sitter.language(ts_lang)
@@ -264,7 +271,7 @@ def _try_treesitter_parse(
         parser = Parser(language_lib)
         tree = parser.parse(content.encode("utf-8"))
 
-        blocks = []
+        blocks: List[Dict[str, Any]] = []
         _walk_tree(tree.root_node, content, file_path, language, blocks, stats)
         return blocks
 
@@ -298,30 +305,34 @@ def _walk_tree(
         name = _extract_name(node, language)
         docstring = _extract_docstring(node, content, language)
         block_text = node.text.decode("utf-8") if node.text else ""
-        blocks.append({
-            "type": "function",
-            "name": name,
-            "content": block_text,
-            "start_line": node.start_point[0] + 1,
-            "end_line": node.end_point[0] + 1,
-            "docstring": docstring,
-            "file_path": file_path,
-        })
+        blocks.append(
+            {
+                "type": "function",
+                "name": name,
+                "content": block_text,
+                "start_line": node.start_point[0] + 1,
+                "end_line": node.end_point[0] + 1,
+                "docstring": docstring,
+                "file_path": file_path,
+            }
+        )
         stats["functions"] += 1
 
     elif node_type in class_types:
         name = _extract_name(node, language)
         docstring = _extract_docstring(node, content, language)
         block_text = node.text.decode("utf-8") if node.text else ""
-        blocks.append({
-            "type": "class",
-            "name": name,
-            "content": block_text,
-            "start_line": node.start_point[0] + 1,
-            "end_line": node.end_point[0] + 1,
-            "docstring": docstring,
-            "file_path": file_path,
-        })
+        blocks.append(
+            {
+                "type": "class",
+                "name": name,
+                "content": block_text,
+                "start_line": node.start_point[0] + 1,
+                "end_line": node.end_point[0] + 1,
+                "docstring": docstring,
+                "file_path": file_path,
+            }
+        )
         stats["classes"] += 1
 
     elif node_type in import_types:
@@ -369,15 +380,17 @@ def _regex_fallback_parse(
             start_line = len(start) + 1
             end_line = _find_block_end(lines, start_line - 1, language)
             block_content = "\n".join(lines[start_line - 1 : end_line])
-            blocks.append({
-                "type": "function",
-                "name": match.group(1),
-                "content": block_content,
-                "start_line": start_line,
-                "end_line": end_line,
-                "docstring": None,
-                "file_path": file_path,
-            })
+            blocks.append(
+                {
+                    "type": "function",
+                    "name": match.group(1),
+                    "content": block_content,
+                    "start_line": start_line,
+                    "end_line": end_line,
+                    "docstring": None,
+                    "file_path": file_path,
+                }
+            )
             stats["functions"] += 1
 
         class_pattern = re.compile(r"^class\s+(\w+)", re.MULTILINE)
@@ -386,15 +399,17 @@ def _regex_fallback_parse(
             start_line = len(start) + 1
             end_line = _find_block_end(lines, start_line - 1, language)
             block_content = "\n".join(lines[start_line - 1 : end_line])
-            blocks.append({
-                "type": "class",
-                "name": match.group(1),
-                "content": block_content,
-                "start_line": start_line,
-                "end_line": end_line,
-                "docstring": None,
-                "file_path": file_path,
-            })
+            blocks.append(
+                {
+                    "type": "class",
+                    "name": match.group(1),
+                    "content": block_content,
+                    "start_line": start_line,
+                    "end_line": end_line,
+                    "docstring": None,
+                    "file_path": file_path,
+                }
+            )
             stats["classes"] += 1
 
     elif language in ("javascript", "typescript", "java", "cpp", "c", "go", "rust"):
@@ -410,15 +425,17 @@ def _regex_fallback_parse(
             start_line = len(start) + 1
             end_line = _find_block_end(lines, start_line - 1, language)
             block_content = "\n".join(lines[start_line - 1 : end_line])
-            blocks.append({
-                "type": "function",
-                "name": name,
-                "content": block_content,
-                "start_line": start_line,
-                "end_line": end_line,
-                "docstring": None,
-                "file_path": file_path,
-            })
+            blocks.append(
+                {
+                    "type": "function",
+                    "name": name,
+                    "content": block_content,
+                    "start_line": start_line,
+                    "end_line": end_line,
+                    "docstring": None,
+                    "file_path": file_path,
+                }
+            )
             stats["functions"] += 1
 
     return blocks
@@ -462,15 +479,17 @@ def _sliding_window_parse(
         end = min(i + chunk_size, len(lines))
         block_content = "\n".join(lines[i:end])
         if block_content.strip():
-            blocks.append({
-                "type": "block",
-                "name": None,
-                "content": block_content,
-                "start_line": i + 1,
-                "end_line": end,
-                "docstring": None,
-                "file_path": file_path,
-            })
+            blocks.append(
+                {
+                    "type": "block",
+                    "name": None,
+                    "content": block_content,
+                    "start_line": i + 1,
+                    "end_line": end,
+                    "docstring": None,
+                    "file_path": file_path,
+                }
+            )
         i += chunk_size - overlap_size
 
     return blocks

@@ -4,12 +4,16 @@ from __future__ import annotations
 
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
 from ...core.exceptions import SearchError
-from ...services.search import search_code, search_and_explain, search_and_explain_stream
+from ...services.search import (
+    search_code,
+    search_and_explain,
+    search_and_explain_stream,
+)
 from ...infrastructure.database import get_db
 
 router = APIRouter(tags=["search"])

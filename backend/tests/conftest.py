@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import os
-import shutil
 import tempfile
 from pathlib import Path
 from typing import Generator
@@ -25,7 +24,8 @@ def sample_repo(tmp_path_factory) -> Path:
     repo_dir = tmp_path_factory.mktemp("sample_repo")
 
     # Python file
-    (repo_dir / "utils.py").write_text('''"""Utility functions."""
+    (repo_dir / "utils.py").write_text(
+        '''"""Utility functions."""
 
 
 def add(a: int, b: int) -> int:
@@ -59,10 +59,12 @@ class Calculator:
     def get_history(self) -> list:
         """Get calculation history."""
         return self.history
-''')
+'''
+    )
 
     # Another Python file
-    (repo_dir / "models.py").write_text('''"""Data models."""
+    (repo_dir / "models.py").write_text(
+        '''"""Data models."""
 
 from dataclasses import dataclass
 from typing import Optional
@@ -92,10 +94,12 @@ class Product:
     def is_expensive(self, threshold: float = 100.0) -> bool:
         """Check if product is expensive."""
         return self.price > threshold
-''')
+'''
+    )
 
     # JavaScript file
-    (repo_dir / "app.js").write_text('''/**
+    (repo_dir / "app.js").write_text(
+        """/**
  * Main application module.
  */
 
@@ -126,10 +130,13 @@ class EventEmitter {
 }
 
 module.exports = { greet, calculateSum, EventEmitter };
-''')
+"""
+    )
 
     # README
-    (repo_dir / "README.md").write_text("# Sample Repository\n\nThis is a sample repository for testing CodeNexus.\n")
+    (repo_dir / "README.md").write_text(
+        "# Sample Repository\n\nThis is a sample repository for testing CodeNexus.\n"
+    )
 
     return repo_dir
 
@@ -138,5 +145,6 @@ module.exports = { greet, calculateSum, EventEmitter };
 def client() -> Generator:
     """Create a FastAPI test client."""
     from app.main import app
+
     with TestClient(app) as c:
         yield c

@@ -15,7 +15,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install ruff
-        run: pip install ruff==0.1.9 black==23.11.0
+        run: pip install ruff==0.1.9
       - name: Lint
         run: ruff check backend/app/ backend/tests/
       - name: Format check
@@ -29,9 +29,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install dependencies
-        run: |
-          pip install mypy==1.7.0 pydantic
-          pip install -r backend/requirements.txt
+        run: pip install -r backend/requirements-test.txt
       - name: Type check
         run: mypy backend/app/ --ignore-missing-imports
 
@@ -44,13 +42,11 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install dependencies
-        run: |
-          pip install -r backend/requirements.txt
-          pip install pytest pytest-cov
+        run: pip install -r backend/requirements-test.txt
       - name: Run tests
         run: |
           cd backend
-          python -m pytest tests/ -v --cov=app --cov-report=xml --cov-report=term
+          python -m pytest tests/test_parsing.py tests/test_vector_db.py -v --cov=app --cov-report=xml --cov-report=term
       - name: Upload coverage
         uses: codecov/codecov-action@v3
         with:

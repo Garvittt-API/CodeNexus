@@ -1,69 +1,57 @@
 <a id="readme-top"></a>
 
-<!-- PROJECT SHIELDS -->
+<!-- ===================== ANIMATED HEADER ===================== -->
 <div align="center">
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+<!-- Gradient Logo Badge -->
+<img src="https://img.shields.io/badge/CODE%20NEXUS-6C63FF?style=for-the-badge&logo=perplexity&logoColor=white&labelColor=0D1117&logoWidth=20" alt="CodeNexus" />
 
-</div>
+<!-- Animated gradient divider -->
+<img src="https://raw.githubusercontent.com/anuraghazra/github-readme-stats/master/assets/gradients.svg" width="100%" height="2px" alt="gradient divider"/>
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/Garvittt-API/CodeNexus">
-    <img src="https://img.shields.io/badge/CODE-NEXUS-blueviolet?style=for-the-badge&logo=search&logoColor=white&labelColor=1A1A2E&color=6C63FF" alt="CodeNexus Logo">
-  </a>
+<!-- Tagline -->
+<br/>
 
-  <h3 align="center">Where Human Language Meets Code Intelligence</h3>
+# <img src="https://em-content.zobj.net/thumbs/apple/354/magnifying-glass-tilted-left_1f50d.png" width="40"/> Semantic Code Search Engine
 
-  <p align="center">
-    Ask natural language questions about any codebase.<br/>
-    Get highly relevant code snippets with AI-powered explanations.
-    <br />
-    <a href="https://github.com/Garvittt-API/CodeNexus"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/Garvittt-API/CodeNexus#quick-start">Quick Start</a>
-    &middot;
-    <a href="https://github.com/Garvittt-API/CodeNexus/blob/main/docs/api.md">API Reference</a>
-    &middot;
-    <a href="https://github.com/Garvittt-API/CodeNexus/issues/new?labels=bug&template=bug_report.md">Report Bug</a>
-    &middot;
-    <a href="https://github.com/Garvittt-API/CodeNexus/issues/new?labels=enhancement&template=feature_request.md">Request Feature</a>
-  </p>
-</div>
+<p align="center">
+  <em>Ask natural language questions about any codebase. Get relevant code snippets with AI-powered explanations.</em>
+</p>
 
-<div align="center">
-
-![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.104-009688?style=flat-square&logo=fastapi&logoColor=white)
-![Next.js](https://img.shields.io/badge/Next.js-14-000000?style=flat-square&logo=next.js&logoColor=white)
-![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)
-![FAISS](https://img.shields.io/badge/FAISS-Vector_Search-66BB6A?style=flat-square&logo=google&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)
-
-</div>
+<!-- Tech Stack Animated Badges -->
+<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white&logoWidth=24" alt="Python"/>
+<img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white&logoWidth=24" alt="FastAPI"/>
+<img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white&logoWidth=24" alt="Next.js"/>
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black&logoWidth=24" alt="React"/>
+<img src="https://img.shields.io/badge/FAISS-4CAF50?style=for-the-badge&logo=google&logoColor=white&logoWidth=24" alt="FAISS"/>
+<img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white&logoWidth=24" alt="Docker"/>
 
 <br/>
 
-<!-- BADGES -->
-<div align="center">
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=24&duration=2500&pause=1000&color=6C63FF&center=true&vCenter=true&multiline=true&repeat=true&width=900&height=80&lines=%F0%9F%94%8D+Semantic+Code+Search+Engine;Ask+Questions.+Find+Code.+Understand+Everything." alt="Typing SVG" />
-</div>
+<!-- Status Badges -->
+<a href="https://github.com/Garvittt-API/CodeNexus/actions"><img src="https://img.shields.io/github/actions/workflow/status/Garvittt-API/CodeNexus/ci.yml?branch=main&style=for-the-badge&label=CI%20STATUS&logo=github-actions&logoColor=white&color=2EA44F" alt="CI Status"/></a>
+<a href="https://github.com/Garvittt-API/CodeNexus/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Garvittt-API/CodeNexus?style=for-the-badge&color=FFD700" alt="License"/></a>
+<a href="https://github.com/Garvittt-API/CodeNexus/stargazers"><img src="https://img.shields.io/github/stars/Garvittt-API/CodeNexus?style=for-the-badge&color=FFA500&logo=github&logoColor=white" alt="Stars"/></a>
+<a href="https://github.com/Garvittt-API/CodeNexus/network/members"><img src="https://img.shields.io/github/forks/Garvittt-API/CodeNexus?style=for-the-badge&color=6C63FF&logo=github&logoColor=white" alt="Forks"/></a>
+<a href="https://github.com/Garvittt-API/CodeNexus/graphs/contributors"><img src="https://img.shields.io/github/contributors/Garvittt-API/CodeNexus?style=for-the-badge&color=4CAF50&logo=github&logoColor=white" alt="Contributors"/></a>
+
+<br/>
+<br/>
+
+<!-- Quick Nav -->
+<a href="#quick-start"><img src="https://img.shields.io/badge/🚀_Quick_Start-2EA44F?style=for-the-badge" alt="Quick Start"/></a>&nbsp;
+<a href="https://github.com/Garvittt-API/CodeNexus/blob/main/docs/api.md"><img src="https://img.shields.io/badge/📚_API_Docs-6C63FF?style=for-the-badge" alt="API Docs"/></a>&nbsp;
+<a href="https://github.com/Garvittt-API/CodeNexus/issues/new?labels=bug&template=bug_report.md"><img src="https://img.shields.io/badge/🐛_Report_Bug-E53935?style=for-the-badge" alt="Report Bug"/></a>&nbsp;
+<a href="https://github.com/Garvittt-API/CodeNexus/issues/new?labels=enhancement&template=feature_request.md"><img src="https://img.shields.io/badge/💡_Request_Feature-FF9800?style=for-the-badge" alt="Request Feature"/></a>
 
 <br/>
 
----
+<!-- Animated wave -->
+<img src="https://raw.githubusercontent.com/anuraghazra/github-readme-stats/master/assets/wave.svg" width="100%" height="30" alt="wave"/>
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
+</div>
 
+<!-- ===================== ABOUT ===================== -->
 <div align="center">
 <strong>CodeNexus</strong> is a full-stack <strong>Semantic Code Search</strong> engine that bridges the gap between human language and code.<br/>
 Unlike keyword search, CodeNexus understands <strong>meaning</strong> — ask <em>"How does authentication work?"</em> and get the exact functions, classes, and files that implement it.
@@ -370,9 +358,16 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-**Garvitt** — [GitHub Profile](https://github.com/Garvittt-API)
+<div align="center">
 
-Project Link: [https://github.com/Garvittt-API/CodeNexus](https://github.com/Garvittt-API/CodeNexus)
+**Built by Garvitt**
+
+[![GitHub](https://img.shields.io/badge/GitHub-Garvittt--API-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Garvittt-API)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/)
+
+**Project Link:** [https://github.com/Garvittt-API/CodeNexus](https://github.com/Garvittt-API/CodeNexus)
+
+</div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -381,27 +376,34 @@ Project Link: [https://github.com/Garvittt-API/CodeNexus](https://github.com/Gar
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* [sentence-transformers](https://www.sbert.net/) — Local embedding models
-* [FAISS](https://faiss.ai/) — Facebook AI Similarity Search
-* [tree-sitter](https://tree-sitter.github.io/) — Incremental parser for code
-* [FastAPI](https://fastapi.tiangolo.com/) — Modern Python web framework
-* [Next.js](https://nextjs.org/) — The React framework for the web
-* [Ollama](https://ollama.com/) — Run LLMs locally
+<div align="center">
+
+| | | |
+|:---:|:---:|:---:|
+| [![sentence-transformers](https://img.shields.io/badge/sentence--transformers-FF6F00?style=for-the-badge&logo=huggingface&logoColor=white)](https://www.sbert.net/) | [![FAISS](https://img.shields.io/badge/FAISS-4CAF50?style=for-the-badge&logo=google&logoColor=white)](https://faiss.ai/) | [![tree-sitter](https://img.shields.io/badge/tree--sitter-FF6F00?style=for-the-badge&logo=tree-sitter&logoColor=white)](https://tree-sitter.github.io/) |
+| [![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/) | [![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/) | [![Ollama](https://img.shields.io/badge/Ollama-000000?style=for-the-badge&logo=ollama&logoColor=white)](https://ollama.com/) |
+
+</div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
 
-<!-- MARKDOWN LINKS & IMAGES -->
-[contributors-shield]: https://img.shields.io/github/contributors/Garvittt-API/CodeNexus.svg?style=for-the-badge
-[contributors-url]: https://github.com/Garvittt-API/CodeNexus/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Garvittt-API/CodeNexus.svg?style=for-the-badge
-[forks-url]: https://github.com/Garvittt-API/CodeNexus/network/members
-[stars-shield]: https://img.shields.io/github/stars/Garvittt-API/CodeNexus.svg?style=for-the-badge
-[stars-url]: https://github.com/Garvittt-API/CodeNexus/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Garvittt-API/CodeNexus.svg?style=for-the-badge
-[issues-url]: https://github.com/Garvittt-API/CodeNexus/issues
-[license-shield]: https://img.shields.io/github/license/Garvittt-API/CodeNexus.svg?style=for-the-badge
-[license-url]: https://github.com/Garvittt-API/CodeNexus/blob/main/LICENSE
-[linkedin-shield]: https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white
-[linkedin-url]: https://linkedin.com/
+<div align="center">
+
+### **If you find CodeNexus useful, please give it a star!**
+
+<br/>
+
+<a href="https://github.com/Garvittt-API/CodeNexus">
+  <img src="https://img.shields.io/badge/⭐_Star_on_GitHub-FFD700?style=for-the-badge&logo=github&logoColor=white" alt="Star on GitHub"/>
+</a>
+
+<br/>
+<br/>
+
+<img src="https://raw.githubusercontent.com/anuraghazra/github-readme-stats/master/assets/wave.svg" width="100%" height="30" alt="wave"/>
+
+*Made with care by [Garvitt](https://github.com/Garvittt-API) — Powered by AI, built for developers.*
+
+</div>

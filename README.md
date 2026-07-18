@@ -54,7 +54,7 @@
 
 <!-- BADGES -->
 <div align="center">
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=28&duration=2500&pause=1000&color=6C63FF&center=true&vCenter=true&multiline=true&repeat=true&width=750&height=90&lines=%F0%9F%94%8D+Semantic+Code+Search+Engine;Ask+Questions.+Find+Code.+Understand+Everything." alt="Typing SVG" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=24&duration=2500&pause=1000&color=6C63FF&center=true&vCenter=true&multiline=true&repeat=true&width=900&height=80&lines=%F0%9F%94%8D+Semantic+Code+Search+Engine;Ask+Questions.+Find+Code.+Understand+Everything." alt="Typing SVG" />
 </div>
 
 <br/>
@@ -64,49 +64,23 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<table>
-<tr>
-<td width="70%" valign="top">
+<div align="center">
+<strong>CodeNexus</strong> is a full-stack <strong>Semantic Code Search</strong> engine that bridges the gap between human language and code.<br/>
+Unlike keyword search, CodeNexus understands <strong>meaning</strong> — ask <em>"How does authentication work?"</em> and get the exact functions, classes, and files that implement it.
+</div>
 
-**CodeNexus** is a full-stack, production-grade **Semantic Code Search** engine that bridges the gap between human language and code. Unlike traditional keyword search, CodeNexus understands **meaning** — ask *"How does authentication work?"* and get the exact functions, classes, and files that implement it, complete with an AI-generated explanation.
+<br/>
 
-**Why CodeNexus?**
+<div align="center">
 
-- **Zero API keys for search** — all embeddings run locally via `sentence-transformers`
-- **AST-aware chunking** — code is split at function/class boundaries, not arbitrary lines
-- **Two-stage ranking** — FAISS ANN search + cross-encoder re-ranking for precision
-- **6 LLM providers** — Ollama, OpenAI, Anthropic, Gemini, DeepSeek, Mistral
-- **One command to deploy** — `docker-compose up` and you're running
+|  |  |  |
+|:---:|:---:|:---:|
+| **Zero API keys** | **AST-aware chunking** | **Two-stage ranking** |
+| Embeddings run locally via `sentence-transformers` | Code split at function/class boundaries | FAISS ANN + cross-encoder re-ranking |
+| **6 LLM providers** | **30+ languages** | **One command deploy** |
+| Ollama, OpenAI, Anthropic, Gemini, DeepSeek, Mistral | Python, JS, TS, Java, Go, Rust, C/C++, and more | `docker-compose up` and you're running |
 
-</td>
-<td width="30%" align="center">
-
-```
-┌──────────────────────┐
-│                      │
-│  "How does auth      │
-│   work in this       │
-│   codebase?"         │
-│         │            │
-│         ▼            │
-│  ┌────────────────┐  │
-│  │  src/auth.py   │  │
-│  │  def login()   │  │
-│  │  def verify()  │  │
-│  │  def jwt()     │  │
-│  └────────────────┘  │
-│         │            │
-│         ▼            │
-│  "The auth system    │
-│   uses JWT tokens    │
-│   with bcrypt..."    │
-│                      │
-└──────────────────────┘
-```
-
-</td>
-</tr>
-</table>
+</div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

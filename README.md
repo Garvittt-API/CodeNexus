@@ -3,16 +3,13 @@
 <!-- ===================== ANIMATED HEADER ===================== -->
 <div align="center">
 
-<!-- Gradient Logo Badge -->
-<img src="https://img.shields.io/badge/CODE%20NEXUS-6C63FF?style=for-the-badge&logo=perplexity&logoColor=white&labelColor=0D1117&logoWidth=20" alt="CodeNexus" />
+<!-- Logo -->
+<img src="assets/logo.png" width="280" alt="CodeNexus Logo" />
 
-<!-- Animated gradient divider -->
-<img src="https://raw.githubusercontent.com/anuraghazra/github-readme-stats/master/assets/gradients.svg" width="100%" height="2px" alt="gradient divider"/>
-
-<!-- Tagline -->
+<!-- Title -->
 <br/>
 
-# <img src="https://em-content.zobj.net/thumbs/apple/354/magnifying-glass-tilted-left_1f50d.png" width="40"/> Semantic Code Search Engine
+# **CodeNexus**
 
 <p align="center">
   <em>Ask natural language questions about any codebase. Get relevant code snippets with AI-powered explanations.</em>
